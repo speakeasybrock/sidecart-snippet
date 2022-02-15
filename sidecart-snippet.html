@@ -1,0 +1,108 @@
+<iframe src="" id="speakeasy-cart-iframe" class="skip-lazy" allowpaymentrequest="*" 
+    style="visibility: hidden; display: none; position: fixed; top: 0px; right: 0px; z-index: 10001; 
+    height: 100%; width: 100%; overflow: hidden; border: none; background-color: rgb(255, 255, 255); transition: transform 0.25s linear 0s; 
+    max-width: 425px; transform: translateX(0px); -webkit-transform: translate3d(0, 0, 0);">
+</iframe>
+
+<script>
+document.body.classList.add("speakeasy-cart-page"); 
+         
+
+function onReady() {
+    
+    var cart_frame = document.getElementById("speakeasy-cart-iframe");
+        
+    var overlay = document.createElement("div");
+    overlay.setAttribute('id', 'speakeasy-overlay');
+    overlay.setAttribute('style','position: fixed; display: none; visibility: hidden; width: 100%; height: 100%; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.8); z-index: 99;');
+    var page = document.getElementById("page");
+    page.appendChild(overlay);
+    
+    var cart = document.createElement("button");
+    cart.style = "padding: 0px; background-color: transparent;";
+    var cartImg = document.createElement('img');
+    cartImg.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAABYlAAAWJQFJUiTwAAAD5UlEQVRoge3YW2hcVRQG4G+amNHEexovqbUWRBEUb9hSLUUfLIhQH0SKUkVbEUURqr6JIgqCrxVREUWKYsWC+FAVqaVYEC8PxqBFvKCCBh8EbWvrNG3m+LD2OMd0kp4zSeoQ5ofDnrMu5+x/77XXWmcqWZaZD1jwf09gttAl0mnoEuk0dIl0GrpEOg3zhkhvUcODc9/JnIFncRoOo4rRasXGIs6Vor3WMSByG16fLKxWVIo4F96RY4A70vgV3sPZ+Lyoc6fsSAV/oR+rsKuhqBbaj3I7shiX4gBmi1aGPVgrSPyOT9t5UBkiu7CknZeUwFaMt+NYhshQGv8WK9cvVnQcwzm7MfSJ1H4w2Z2SdPvFDhwvwmk/TsBg0m8vzSChTB3ZlsbncC4WCnKL8GTSbUn3Q2lyw8m2scpXJf1g8l+Mm5JuDz5ohwTliOxI47IWfo0z05BXNHf7uBZ2UE/jzWn8CPtKzOc/KJO1luOTdPubmGyPWO2FIpzq+FOQWJB0VQwkv33YK0IrE2G6OOlux2uT31s0a5Uh0ocRXFTs0aVwWCSSscmKokTKhNY4dqffW0UqXobLNVdyJy7DcqzEFbhBM4zuTLJVYkFeSvLtWpAog7KVfaeI6bMwmpN/gXX4EV+28JsQi7ZFZLIGzk/j+yXncQTKEmkc+JV4U8R4hquTfDVeFim1VxTPkzUP/Fv4RezQmbhOEHu3vek3UbZF6cO3ZrcwfiZCsSXmokUhzsmHWC8y2BsiK60Ru7Qbm5OsR+zY6XhYhNaLYiEyPIRzNOvTzJBlWaGrVv/3urtWz7JaPXsnJ1ufZJtysvx1IOnzsrFaPTtUq2dLp/BRqxebW5ZlbbXxI2lcg8fEAV+XZNdig2hLekVHOyTODDyV/NeKNv1XM8xWDbTTxvfgJxEWs4FRPCDXuucxFwUxj1vxoEirY6JPGhBpuerINn9Cs9mcSLaDuBIn4RAuEAt0TInkcSKW4vs02ekwLL7Jv073S0TCWIEXcN9kh7mo7K1wr8hUo2lyd01juwnfiE/Zj3EhfsbbSX/xTCbS7jf7ItyI53OypXhF9E3bcKoImQnR5m/I2a4QLfsjuCfJZlTdy4ZWj1jB1eIsTIU/ROY6LLrk/qM8/gfRg+2drJir0KqIAjcdCeIcNNr3o5HYjGu0IFFqYm0c9j5cInbl6RamG0XYDIiwmsCjuGWS3bhoTUame2/RHWmnsuevZ1LFblxPTGFXrdWzHTm7fbV6dv10Fb1sZZ9p+q3icZyH78Shrre0jO+P+0U3vAOvFnnvrNeRTse8+Te+S6TT0CXSaegS6TR0iXQa5g2RfwCnyxcx6xM+5gAAAABJRU5ErkJggg==';
+    cartImg.width = 40;
+    cartImg.height = 40;
+    cart.appendChild(cartImg);
+    
+    //assumes element with id speakeasy-cart has been added to document
+    var cart_button = document.getElementById("speakeasy-cart");
+    cart_button.appendChild(cart);
+    
+    function visibilityToggle() {
+        overlay.style.visibility = cart_frame.style.visibility == 'visible' ? 'hidden' : 'visible';
+        cart_frame.style.visibility = cart_frame.style.visibility == 'visible' ? 'hidden' : 'visible';
+        overlay.style.display = overlay.style.display == 'block' ? 'none' : 'block';
+        cart_frame.style.display = cart_frame.style.display == 'block' ? 'none' : 'block';
+    }
+    
+    
+    cart.onclick = function () {
+        visibilityToggle();
+    };
+    
+    
+    overlay.onclick = function () {
+        visibilityToggle();
+    }
+
+    // close cart events from sidecart iframe
+    if (window.addEventListener) {
+        window.addEventListener("message", onMessage, false);        
+    } else if (window.attachEvent) {
+        window.attachEvent("onmessage", onMessage, false);
+    }
+
+    function onMessage(event) {
+        console.log("onMessage");
+        // TODO: check sender origin from Speakeasy staging and prod domains
+        // if (event.origin !== "http://https://boring-sammet-9f9baf.netlify.app.com") return;
+
+        var messageData = event.data;
+        if(typeof event.data.function === 'string') {
+            if (event.data.function.startsWith("closeCart")) { 
+                cart_frame.style.visibility = 'hidden';
+                overlay.style.visibility = 'hidden';
+                cart_frame.style.display = 'none';
+                overlay.style.display = 'none';
+            }
+        }    
+    }
+    
+    document.querySelectorAll('.buy-button')
+    .forEach(item => {
+        item.addEventListener('click', event => {
+            console.log(item.dataset.sku);
+            document.getElementById('speakeasy-cart-iframe').contentWindow.postMessage('addToCart:'+item.dataset.sku, '*');
+            cart_frame.style.visibility = 'visible';
+            overlay.style.visibility = 'visible';
+            cart_frame.style.display = 'block';
+            overlay.style.display = 'block';
+            event.preventDefault();
+        })
+    })
+   
+};
+
+document.onreadystatechange = function () {
+  if (document.readyState === 'interactive') {
+    onReady();
+  }
+};
+</script>
+    
+<style>
+#speakeasy-cart {
+    top: 20px;
+    right: 80px;
+    transition: top 0.5s ease;
+}
+
+@media screen and (min-width: 1025px){
+    #speakeasy-cart {
+        top: 40px;
+        right: 10px
+    }
+}
+</style>
